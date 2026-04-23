@@ -1,0 +1,41 @@
+{
+    "name": "tryhackx/flarum-thumb-sliders",
+    "description": "Displays a thumbnail image slider on the left side of each discussion in the discussion list, using images found in the first post.",
+    "keywords": ["flarum", "extension", "thumbnails", "slider", "images"],
+    "type": "flarum-extension",
+    "license": "MIT",
+    "require": {
+        "flarum/core": "^1.8"
+    },
+    "authors": [
+        {
+            "name": "TryHackX",
+            "email": "contact@tryhackx.org"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "TryHackX\\ThumbSliders\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Thumb Sliders",
+            "category": "feature",
+            "icon": {
+                "name": "fas fa-images",
+                "backgroundColor": "#e74c3c",
+                "color": "#fff"
+            }
+        },
+        "flarum-cli": {
+            "modules": {
+                "admin": true,
+                "forum": true,
+                "js": true,
+                "jsCommon": false,
+                "css": true
+            }
+        }
+    }
+}
