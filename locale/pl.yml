@@ -1,0 +1,59 @@
+tryhackx-thumb-sliders:
+  admin:
+    settings:
+      enabled_label: "Włącz miniatury (slider)"
+      enabled_help: "Pokazuj slider miniatur na liście tematów."
+      slider_width_label: "Szerokość slidera (px)"
+      slider_width_help: "Szerokość slidera miniatur. Wysokość jest automatyczna (proporcje plakatu 2:3)."
+      autoplay_speed_label: "Szybkość autoodtwarzania (ms)"
+      autoplay_speed_help: "Czas między przejściami slajdów w milisekundach."
+      max_images_label: "Maksymalna liczba obrazów na temat"
+      max_images_help: "Maksymalna liczba obrazów pokazywanych w sliderze (maks. 20)."
+      min_img_size_label: "Minimalny wymiar obrazu (px)"
+      min_img_size_help: "Pomijaj obrazy o szerokości lub wysokości mniejszej niż ta wartość."
+      max_img_size_label: "Maksymalny wymiar obrazu (px)"
+      max_img_size_help: "Pomijaj obrazy o szerokości lub wysokości większej niż ta wartość."
+      fallback_mode_label: "Obraz zastępczy, gdy brak obrazu"
+      fallback_mode_help: "Wybierz, co wyświetlić, gdy temat nie ma użytecznego obrazu lub gdy obraz się nie załaduje."
+      fallback_mode_none: "Brak miniatury (treść przesuwa się w lewo)"
+      fallback_mode_default: "Wbudowany placeholder"
+      fallback_mode_custom: "Własny wgrany obraz"
+    fallback:
+      title: "Biblioteka obrazów zastępczych"
+      upload_button: "Wgraj obraz"
+      uploading: "Wgrywanie…"
+      no_files: "Nie wgrano jeszcze żadnych obrazów."
+      delete: "Usuń"
+      confirm_delete: "Usunąć ten obraz?"
+      delete_modal_title: "Usuń obraz zastępczy"
+      delete_modal_cancel: "Anuluj"
+      delete_modal_error: "Nie udało się usunąć obrazu. Spróbuj ponownie."
+      clear_selection: "Nie używaj żadnego"
+      not_active_mode: "Te obrazy są używane tylko gdy tryb zastępczy ustawiono na „Własny wgrany obraz”."
+    support:
+      button: Wesprzyj rozwój
+      title: Wesprzyj tę modyfikację
+      description: Jeśli uważasz tę modyfikację za przydatną, rozważ wsparcie jej rozwoju niewielką darowizną. Każdy wkład pomaga utrzymać projekt przy życiu.
+      copy: Kopiuj adres
+      thanks: Dziękuję za wsparcie!
+
+# Wspólna sekcja awatarów, używana przez flarum-thumb-sliders i flarum-topic-rating.
+# Trzymaj ten blok IDENTYCZNY w obu rozszerzeniach, aby stringi były dostępne
+# niezależnie od tego, które jest zainstalowane (zduplikowane klucze łączą się bez szkody).
+tryhackx-avatars:
+  admin:
+    title: "Awatary na liście tematów"
+    help: "Wybierz jak zachowuje się awatar autora na liście tematów, osobno dla desktopu i wersji mobilnej. To ustawienie współdzielone — zmiana tutaj zmienia je także w Thumb Sliders / Topic Rating, zależnie od tego co masz zainstalowane."
+    thumbs_inactive: "Thumb Sliders nie jest aktywne, więc nie ma miniatury, którą można zastąpić awatar. Opcje \"zastąp\" poniżej działają jak \"Pokaż awatar\" — użyj \"Ukryj awatar\", aby usunąć awatary (np. dla lżejszej listy na telefonie)."
+    save_error: "Nie udało się zapisać ustawienia awatara. Spróbuj ponownie."
+    device_desktop: "Desktop"
+    device_mobile: "Mobilny"
+    mode_show: "Pokaż awatar"
+    mode_with_image: "Zastąp miniaturą, gdy temat ma obraz"
+    mode_always: "Zawsze zastępuj miniaturą"
+    mode_hide: "Ukryj awatar"
+    hint_show: "Awatar autora jest zawsze pokazywany."
+    hint_hide: "Awatar nigdy nie jest pokazywany. Jeśli dostępna jest miniatura, zajmuje jego miejsce; w przeciwnym razie wiersz po prostu nie ma awatara."
+    hint_with_image: "Miniatura zastępuje awatar tylko gdy temat ma prawdziwy obraz; w przeciwnym razie pokazywany jest awatar."
+    hint_always: "Miniatura (lub skonfigurowany zamiennik) zawsze zastępuje awatar; tematy bez żadnej miniatury zachowują awatar."
+    hint_replace_no_thumbs: "Thumb Sliders jest nieaktywne, więc awatar jest pokazywany jak zwykle. Zainstaluj/włącz Thumb Sliders, aby zastąpić go miniaturą, albo wybierz \"Ukryj awatar\"."

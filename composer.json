@@ -1,0 +1,59 @@
+{
+    "name": "tryhackx/flarum-thumb-sliders",
+    "description": "Extracts images automatically from the first post to display an animated, lazy-loaded thumbnail image slider in the Flarum discussion list using a shared modular layout structure.",
+    "keywords": [
+        "flarum",
+        "extension",
+        "thumbnails",
+        "slider",
+        "carousel",
+        "images",
+        "lazy-load",
+        "avatar-control",
+        "layout-module"
+    ],
+    "type": "flarum-extension",
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "flarum/core": "^2.0.0-rc.1"
+    },
+    "authors": [
+        {
+            "name": "TryHackX",
+            "email": "contact@tryhackx.org",
+            "homepage": "https://github.com/TryHackX"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/TryHackX/flarum-thumb-sliders/issues",
+        "source": "https://github.com/TryHackX/flarum-thumb-sliders"
+    },
+    "autoload": {
+        "psr-4": {
+            "TryHackX\\ThumbSliders\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Thumb Sliders",
+            "category": "feature",
+            "icon": {
+                "name": "fas fa-images",
+                "color": "#ffffff",
+                "backgroundColor": "#e74c3c"
+            }
+        },
+        "flarum-cli": {
+            "modules": {
+                "admin": true,
+                "forum": true,
+                "js": true,
+                "jsCommon": false,
+                "css": true
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

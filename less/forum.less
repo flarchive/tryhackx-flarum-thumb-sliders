@@ -1,0 +1,306 @@
+.ThumbSlider {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  flex-shrink: 0;
+
+  // While probing the first image the slider shows NOTHING and takes NO space —
+  // no box, no spinner, no reserved height. It is revealed (JS removes
+  // `--probing`, adds `--ready`) only once the first image has actually loaded,
+  // so a broken or slow-failing image never flashes a loading box, even right
+  // after a page refresh. A broken image in mode 'none' simply stays hidden.
+  &--probing {
+    display: none;
+  }
+
+  // The card background + shadow appear only once there is something to show:
+  // a loaded image (--ready) or a fallback.
+  &--ready,
+  &--fallback {
+    background: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.8);
+  }
+}
+
+.ThumbSlider__track {
+  position: relative;
+  width: 100%;
+  aspect-ratio: ~"2 / 3";
+}
+
+.ThumbSlider__item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 1;
+
+  &--outgoing {
+    opacity: 1;
+    z-index: 1;
+    .ThumbSlider__img { transform: scale(1); }
+  }
+
+  &--active {
+    opacity: 1;
+    z-index: 2;
+    transition: opacity 0.9s cubic-bezier(0.7, 0, 0.3, 1);
+    .ThumbSlider__img { transform: scale(1); }
+  }
+}
+
+.ThumbSlider__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1);
+  transform: scale(1.2);
+}
+
+.ThumbSlider__counter {
+  position: absolute;
+  bottom: 4px;
+  right: 5px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  line-height: 1.4;
+  pointer-events: none;
+  z-index: 10;
+}
+
+// The counter is meaningless until the first image is actually showing — keep
+// it hidden during the silent probe so it doesn't flash over a transparent box.
+.ThumbSlider:not(.ThumbSlider--ready) .ThumbSlider__counter {
+  display: none;
+}
+
+.ThumbSlider--fallback {
+  // Static fallback variants don't animate their image.
+  .ThumbSlider__img {
+    transform: none;
+    transition: none;
+  }
+}
+
+.ThumbSlider__placeholder {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.06);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><g fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><rect x='10' y='14' width='44' height='36' rx='3'/><circle cx='22' cy='26' r='4'/><path d='M10 42 L24 30 L36 40 L46 32 L54 40'/><line x1='12' y1='12' x2='52' y2='52' opacity='0.7'/></g></svg>");
+  background-size: 60%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+[data-theme^="dark"] .ThumbSlider__placeholder {
+  background-color: rgba(255, 255, 255, 0.05);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><g fill='none' stroke='%23bbb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><rect x='10' y='14' width='44' height='36' rx='3'/><circle cx='22' cy='26' r='4'/><path d='M10 42 L24 30 L36 40 L46 32 L54 40'/><line x1='12' y1='12' x2='52' y2='52' opacity='0.7'/></g></svg>");
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// SHARED RESTRUCTURED DISCUSSION-LIST LAYOUT
+// Mirror of the identical block in flarum-topic-rating/less/forum.less.
+// Markup is produced by discussionListLayout.js (contentView override).
+// Replaces the former absolute-offset lattice (per-combination @phone row
+// offsets that hung off .has-ThumbSlider / :has()) with a single flex row
+// plus a right-hand meta column that flexbox aligns automatically.
+//
+//   [thumb] [author] [main: title + info] [meta: tags/rating/replies/views]
+// ─────────────────────────────────────────────────────────────────────
+.DiscussionListItem-content--restructured {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 6px 12px 6px;
+
+  > .ThumbSlider {
+    flex: 0 0 auto;
+  }
+
+  > .DiscussionListItem-author {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+
+  > .DiscussionListItem-main {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+  }
+
+  // The big right margin core adds to dodge the old absolute items is no
+  // longer needed now that the meta column is a real flex sibling.
+  .DiscussionListItem-info .item-excerpt {
+    margin-right: 0;
+  }
+
+  > .DiscussionListItem-meta {
+    flex: 0 0 auto;
+    // Cap the meta column so a discussion with many tags wraps them
+    // down inside the column instead of pushing the row wider.
+    max-width: 18%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 4px;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .DiscussionListItem-meta-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+    line-height: 1.2;
+    color: var(--muted-color);
+  }
+
+  // Reply count (core renders a pill on mobile) and FoF views share one
+  // flat icon + number look so the column lines up.
+  .DiscussionListItem-meta-item--stat,
+  .DiscussionListItem-meta-item--views {
+    .DiscussionListItem-stats-item,
+    > span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: auto;
+      margin: 0;
+      padding: 0;
+      background: none;
+      border-radius: 0;
+      color: inherit;
+      font-size: inherit;
+    }
+
+    .icon,
+    .DiscussionListItem-stats-item-icon,
+    i {
+      display: inline-block;
+      width: 16px;
+      margin: 0;
+      font-size: 12px;
+      text-align: center;
+    }
+  }
+
+  // Keep the stars on a single row inside the column.
+  .DiscussionListItem-meta-item--rating .StarRating {
+    flex-direction: row;
+  }
+
+  // Tag labels wrap naturally inside the (already-capped) meta column,
+  // so many tags stack down instead of pushing the row wider.
+  .DiscussionListItem-meta-item--tags {
+    .TagsLabel {
+      margin: 0;
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 4px 6px;
+    }
+  }
+}
+
+@media @phone {
+  .DiscussionListItem-content--restructured {
+    gap: 8px;
+    padding: 10px 6px 10px 6px;
+
+    > .ThumbSlider {
+      width: 56px !important;
+    }
+
+    // Cancel core's @phone `.DiscussionListItem-main { padding-right: 48px }`
+    // (that padding only existed to dodge the old absolute stats column). The
+    // flex `gap` above already separates main from the meta column, so no extra
+    // right padding is wanted — but the rule must stay to override the 48px.
+    .DiscussionListItem-main {
+      padding-right: 0;
+    }
+
+    .DiscussionListItem-meta {
+      gap: 3px;
+    }
+
+    .DiscussionListItem-meta-item {
+      font-size: 11px;
+    }
+
+    // NOTE: tags are NOT in the meta column on phones — discussionListLayout.js
+    // renders them inside `.DiscussionListItem-main` (see `.DiscussionListItem-mobileTags`
+    // below), so the old `--tags { max-width }` cap is no longer needed here.
+
+    .DiscussionListItem-author .Avatar {
+      .Avatar--size(30px);
+    }
+
+    // Phone-only tag strip. Tags live inside the main column on their own line,
+    // just below the author/info line, and wrap across the full row width
+    // instead of stacking one-per-line in the cramped right-hand meta column.
+    .DiscussionListItem-mobileTags {
+      margin-top: 5px;
+      // Keep the tags compact in the main column. Left alone they inherit the
+      // larger body font (~13px base -> ~11px labels) and look bigger than on
+      // desktop. Pin 11px here; with TagLabel's own 0.85em that yields ~9px
+      // labels — at or just below the desktop tag size.
+      font-size: 11px;
+
+      .TagsLabel {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 6px;
+        margin: 0;
+      }
+    }
+  }
+}
+
+// Reserve space to the right of the title for the meta column. Overrides
+// flarum/tags' own `.IndexPage .DiscussionListItem-title { margin-right }`
+// so the value survives a fresh reinstall of the (foreign) tags extension.
+@media @tablet-up {
+  .IndexPage,
+  .UserPage,
+  .DiscussionList--floatingTags {
+    .DiscussionListItem-content--restructured .DiscussionListItem-title {
+      margin-right: 32px;
+    }
+  }
+
+  // Reserve room to the right of the meta column for the absolutely-positioned
+  // controls dropdown (the ⋮ icon: `position: absolute; right: 5px`, ~36px
+  // wide). Without this the meta column (tags / rating / views / replies) slides
+  // underneath the ⋮ — most visible on rows that have no thumb or rating, where
+  // the meta column reaches furthest right. 28px clears the icon with ~5px gap.
+  .DiscussionListItem-content--restructured > .DiscussionListItem-meta {
+    margin-right: 28px;
+  }
+
+  // Tighter, symmetric horizontal padding on the row itself. Core ships
+  // 25 / 15 on tablet+, we want 12 / 12 to match the inner content
+  // padding rhythm (12px both sides on .DiscussionListItem-content--restructured).
+  .DiscussionListItem {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+}
+
+// Same gating as the light theme: the box shows only once there is content
+// (loaded image or fallback), never while probing the first image.
+[data-theme^="dark"] .ThumbSlider--ready,
+[data-theme^="dark"] .ThumbSlider--fallback {
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 1);
+}
