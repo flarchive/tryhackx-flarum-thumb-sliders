@@ -2,13 +2,15 @@
 
 > **Read-only archive of released versions of tryhackx/flarum-thumb-sliders.** Not for installation: use [Packagist](https://packagist.org/packages/tryhackx/flarum-thumb-sliders) or the [upstream repository](https://github.com/TryHackX/flarum-thumb-sliders).
 
-**0** versions archived · Latest: [`2.1.7`](https://github.com/flarchive/tryhackx-flarum-thumb-sliders/tree/archive/v2.1.7) · License: `MIT` · Flarum: `^2.0.0-rc.1`
+**3** versions archived · Latest: [`2.1.7`](https://github.com/flarchive/tryhackx-flarum-thumb-sliders/tree/archive/v2.1.7) · License: `MIT` · Flarum: `^2.0.0-rc.1`
 
 ## Archived Versions
 
 | Version | Released | Flarum | Source |
 |---|---|---|---|
-| — | — | — | — |
+| `1.0.6` | 2026-04-23 | `^1.8` | [Browse](https://github.com/flarchive/tryhackx-flarum-thumb-sliders/tree/archive/v1.0.6) |
+| `2.1.6` | 2026-06-13 | `^2.0.0-rc.1` | [Browse](https://github.com/flarchive/tryhackx-flarum-thumb-sliders/tree/archive/v2.1.6) |
+| `2.1.7` | 2026-10-13 | `^2.0.0-rc.1` | [Browse](https://github.com/flarchive/tryhackx-flarum-thumb-sliders/tree/archive/v2.1.7) |
 
 Catalog entry: [packages/tryhackx-flarum-thumb-sliders.json](https://github.com/flarchive/archive-index/blob/main/packages/tryhackx-flarum-thumb-sliders.json)
 
