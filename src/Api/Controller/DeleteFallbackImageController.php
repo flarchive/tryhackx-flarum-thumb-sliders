@@ -1,0 +1,81 @@
+<?php
+
+namespace TryHackX\ThumbSliders\Api\Controller;
+
+use Flarum\Http\RequestUtil;
+use Flarum\Settings\SettingsRepositoryInterface;
+use Illuminate\Contracts\Filesystem\Factory as FilesystemFactory;
+use Laminas\Diactoros\Response\EmptyResponse;
+use Laminas\Diactoros\Response\JsonResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use TryHackX\ThumbSliders\FallbackStorage;
+
+class DeleteFallbackImageController implements RequestHandlerInterface
+{
+    const SETTING_ACTIVE = 'tryhackx-thumb-sliders.fallback_image';
+
+    protected FilesystemFactory $filesystem;
+    protected SettingsRepositoryInterface $settings;
+    protected TranslatorInterface $translator;
+    protected LoggerInterface $log;
+
+    public function __construct(
+        FilesystemFactory $filesystem,
+        SettingsRepositoryInterface $settings,
+        TranslatorInterface $translator,
+        LoggerInterface $log
+    ) {
+        $this->filesystem = $filesystem;
+        $this->settings = $settings;
+        $this->translator = $translator;
+        $this->log = $log;
+    }
+
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        RequestUtil::getActor($request)->assertAdmin();
+
+        $filename = (string) ($request->getAttribute('routeParameters')['filename'] ?? '');
+
+        // Strict sanitization: only [a-zA-Z0-9._-], no path separators, no traversal
+        if ($filename === ''
+            || strpos($filename, '/') !== false
+            || strpos($filename, '\\') !== false
+            || strpos($filename, '..') !== false
+            || !preg_match('/^[a-zA-Z0-9._-]+$/', $filename)
+        ) {
+            return $this->error('invalid_filename', 400);
+        }
+
+        $disk = $this->filesystem->disk('flarum-assets');
+        $path = FallbackStorage::DIR . '/' . $filename;
+
+        if (!$disk->exists($path)) {
+            return $this->error('not_found', 404);
+        }
+
+        try {
+            $disk->delete($path);
+        } catch (\Throwable $e) {
+            $this->log->error('tryhackx-thumb-sliders: could not delete fallback image', ['exception' => $e]);
+
+            return $this->error('delete_failed', 500);
+        }
+
+        // If the deleted file was the active fallback, clear the setting
+        if ($this->settings->get(self::SETTING_ACTIVE) === $filename) {
+            $this->settings->set(self::SETTING_ACTIVE, '');
+        }
+
+        return new EmptyResponse(204);
+    }
+
+    protected function error(string $key, int $status): JsonResponse
+    {
+        return new JsonResponse(['error' => $this->translator->trans('tryhackx-thumb-sliders.api.' . $key)], $status);
+    }
+}

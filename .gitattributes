@@ -1,0 +1,16 @@
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+
+# Not needed in installed copies (composer dist archives).
+/.github export-ignore
+/tests export-ignore
+phpunit*.xml export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+# README screenshots (~2.5 MB) — rendered from the repository, never used by an install.
+/assets export-ignore

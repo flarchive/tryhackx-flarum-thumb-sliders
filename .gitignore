@@ -1,0 +1,7 @@
+/vendor/
+/js/node_modules/
+composer.lock
+tests/.phpunit.cache
+.phpunit.result.cache
+# Throw-away test install created by flarum/testing (when FLARUM_TEST_TMP_DIR_LOCAL points here)
+/tests/integration/tmp/
